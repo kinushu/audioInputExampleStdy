@@ -2,6 +2,13 @@
 
 #include "ofMain.h"
 
+class AttackChecker
+{
+public:
+	AttackChecker();
+	~AttackChecker();
+};
+
 class ofApp : public ofBaseApp{
 	
 	public:

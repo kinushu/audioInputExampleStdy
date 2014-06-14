@@ -138,6 +138,15 @@ void ofApp::draw(){
 		
 }
 
+void SplitInterleavedSample(
+	float * input, const int bufferSize, const int nChannels,
+	const int selectChannel, // 0 order
+	float * output)
+{
+	for (int i = 0; i < bufferSize; i++){
+		output[i] = input[i*nChannels + selectChannel];
+	}
+}
 //--------------------------------------------------------------
 void ofApp::audioIn(float * input, int bufferSize, int nChannels){	
 	
@@ -146,11 +155,11 @@ void ofApp::audioIn(float * input, int bufferSize, int nChannels){
 	// samples are "interleaved"
 	int numCounted = 0;	
 
+	SplitInterleavedSample(input,bufferSize,nChannels,0,&left[0]);
+	SplitInterleavedSample(input,bufferSize,nChannels,1,&right[0]);
+
 	//lets go through each sample and calculate the root mean square which is a rough way to calculate volume	
 	for (int i = 0; i < bufferSize; i++){
-		left[i]		= input[i*2]*0.5;
-		right[i]	= input[i*2+1]*0.5;
-
 		curVol += left[i] * left[i];
 		curVol += right[i] * right[i];
 		numCounted+=2;
